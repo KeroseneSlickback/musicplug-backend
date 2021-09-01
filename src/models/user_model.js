@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const Post = require('./post_model');
 const Comment = require('./comment_model');
 
@@ -8,6 +9,7 @@ const userSchema = new mongoose.Schema(
 	{
 		username: {
 			type: String,
+			unique: true,
 			required: true,
 			trim: true,
 		},
@@ -77,6 +79,8 @@ userSchema.methods.toJSON = function () {
 	delete userObject.password;
 	delete userObject.tokens;
 	delete userObject.avatar;
+	delete userObject.admin;
+	delete userObject.emailVerified;
 
 	return userObject;
 };

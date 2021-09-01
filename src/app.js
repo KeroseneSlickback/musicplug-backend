@@ -5,6 +5,7 @@ const express = require('express');
 const helmet = require('helmet');
 const logger = require('morgan');
 const path = require('path');
+require('./db/mongoose');
 require('dotenv').config();
 
 // Required components
@@ -25,7 +26,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 app.use(helmet());
 
 // Required middleware routes
@@ -35,6 +36,10 @@ app.use('/posts', post_router);
 // test routes
 app.get('/', (req, res) => {
 	res.json({ message: 'Test GET' });
+});
+
+app.get('*', (req, res) => {
+	res.status(404).json({ message: 'Resource not found' });
 });
 
 // Catch 404

@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = new express.Router();
 
 // Controllers
 const post_controller = require('../controllers/post_controller');
@@ -34,3 +34,5 @@ router.patch('/:id/comments/:id', comment_controller.comment_patch);
 
 // comment DELETE
 router.delete('/:id/comments/:id', comment_controller.comment_delete);
+
+module.exports = router;
