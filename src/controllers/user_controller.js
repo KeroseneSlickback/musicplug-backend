@@ -54,13 +54,14 @@ exports.register = [
 			user.avatar = buffer;
 		}
 		try {
-			newUser.save().then(user => {
-				const jwt = utils.issueJWT(user);
-				res
-					.status(201)
-					.send({ user, token: jwt.token, expiresIn: jwt.expires });
+			const user = await newUser.save();
+			const jwt = await utils.issueJWT(user);
+			res.status(201).send({
+				success: true,
+				user,
+				token: jwt.token,
+				expiresIn: jwt.expires,
 			});
-			// res.status(201).send({ user, token });
 		} catch (e) {
 			res.status(400).send(e);
 		}
@@ -73,34 +74,49 @@ exports.login = async (req, res) => {
 			req.body.email,
 			req.body.password
 		);
-		const token = await user.generateAuthToken();
-		res.send({ user, token });
+		if (!user) {
+			res.status(401).json({ success: false, msg: 'Could not log in.' });
+		}
+		if (user) {
+			const jwt = await utils.issueJWT(user);
+			res.send({
+				success: true,
+				user,
+				token: jwt.token,
+				expiresIn: jwt.expires,
+			});
+		} else {
+			res.status(401).json({
+				success: false,
+				msg: 'You entered the wrong user infomation.',
+			});
+		}
 	} catch (e) {
 		res.status(400).send(e);
 	}
 };
 
-exports.logout = async (req, res) => {
-	try {
-		req.user.tokens = req.user.tokens.filter(token => {
-			return token.token !== req.token;
-		});
-		await req.user.save();
-		res.send();
-	} catch (e) {
-		res.status(500).send(e);
-	}
-};
+// exports.logout = async (req, res) => {
+// 	try {
+// 		req.user.tokens = req.user.tokens.filter(token => {
+// 			return token.token !== req.token;
+// 		});
+// 		await req.user.save();
+// 		res.send();
+// 	} catch (e) {
+// 		res.status(500).send(e);
+// 	}
+// };
 
-exports.logoutall = async (req, res) => {
-	try {
-		req.user.tokens = [];
-		await req.user.save();
-		res.send();
-	} catch (e) {
-		res.status(500).send(e);
-	}
-};
+// exports.logoutall = async (req, res) => {
+// 	try {
+// 		req.user.tokens = [];
+// 		await req.user.save();
+// 		res.send();
+// 	} catch (e) {
+// 		res.status(500).send(e);
+// 	}
+// };
 
 exports.user_get = async (req, res) => {
 	const user = await User.findById(req.params.id);

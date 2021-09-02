@@ -3,12 +3,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const Post = require('./post_model');
 const Comment = require('./comment_model');
-
-const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
-const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 const userSchema = new mongoose.Schema(
 	{

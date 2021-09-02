@@ -12,18 +12,20 @@ router.post('/register', user_controller.register);
 
 router.post('/login', user_controller.login);
 
-router.post(
-	'/logout',
-	passport.authenticate('jwt', { session: false }),
-	user_controller.logout
-);
+// With passport-jwt, no need for logout sessions as the token is save in user's local storage. Logout would then be initiated from the front-end to delete that stored token earlier.
 
-// Logout of all user jwt-sessions
-router.post(
-	'/logoutall',
-	passport.authenticate('jwt', { session: false }),
-	user_controller.logoutall
-);
+// router.post(
+// 	'/logout',
+// 	passport.authenticate('jwt', { session: false }),
+// 	user_controller.logout
+// );
+
+// // Logout of all user jwt-sessions
+// router.post(
+// 	'/logoutall',
+// 	passport.authenticate('jwt', { session: false }),
+// 	user_controller.logoutall
+// );
 
 // User GET
 router.get(
