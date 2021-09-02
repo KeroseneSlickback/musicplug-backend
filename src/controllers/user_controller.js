@@ -2,6 +2,7 @@ const User = require('../models/user_model');
 const { body, validationResult } = require('express-validator');
 const multer = require('multer');
 const sharp = require('sharp');
+const utils = require('../lib/utils');
 
 const upload = multer({
 	limits: {
@@ -44,7 +45,7 @@ exports.register = [
 		if (!errors.isEmpty()) {
 			res.render('error');
 		}
-		const user = new User(req.body);
+		const newUser = new User(req.body);
 		if (req.file) {
 			const buffer = await sharp(req.file.buffer)
 				.resize({ width: 250, height: 250 })
@@ -52,10 +53,14 @@ exports.register = [
 				.toBuffer();
 			user.avatar = buffer;
 		}
-		const token = await user.generateAuthToken();
 		try {
-			await user.save();
-			res.status(201).send({ user, token });
+			newUser.save().then(user => {
+				const jwt = utils.issueJWT(user);
+				res
+					.status(201)
+					.send({ user, token: jwt.token, expiresIn: jwt.expires });
+			});
+			// res.status(201).send({ user, token });
 		} catch (e) {
 			res.status(400).send(e);
 		}

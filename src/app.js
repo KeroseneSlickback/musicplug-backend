@@ -5,8 +5,10 @@ const express = require('express');
 const helmet = require('helmet');
 const logger = require('morgan');
 const path = require('path');
+const passport = require('passport');
 require('./db/mongoose');
 require('dotenv').config();
+require('./config/passport')(passport);
 
 // Required components
 
@@ -21,6 +23,7 @@ const post_router = require('./routers/post_router');
 // Global middleware
 const app = express();
 
+app.use(passport.initialize());
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());

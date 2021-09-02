@@ -1,9 +1,14 @@
+const fs = require('fs');
+const path = require('path');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Post = require('./post_model');
 const Comment = require('./comment_model');
+
+const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
+const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 const userSchema = new mongoose.Schema(
 	{
@@ -46,14 +51,14 @@ const userSchema = new mongoose.Schema(
 		admin: {
 			type: Boolean,
 		},
-		tokens: [
-			{
-				token: {
-					type: String,
-					required: true,
-				},
-			},
-		],
+		// tokens: [
+		// 	{
+		// 		token: {
+		// 			type: String,
+		// 			required: true,
+		// 		},
+		// 	},
+		// ],
 	},
 	{
 		timestamps: true,
@@ -85,15 +90,26 @@ userSchema.methods.toJSON = function () {
 	return userObject;
 };
 
-userSchema.methods.generateAuthToken = async function () {
-	const user = this;
-	const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
+// userSchema.methods.generateAuthToken = async function () {
+// 	const _id = this._id;
+// 	const expiresIn = '1d';
+// 	const payload = {
+// 		sub: _id.toString(),
+// 		iat: Date.now(),
+// 	};
+// 	console.log(payload);
+// 	const token = jwt.sign(payload, PUB_KEY, {
+// 		expiresIn: expiresIn,
+// 		algorithm: 'RS256',
+// 	});
 
-	user.tokens = user.tokens.concat({ token });
-	await user.save();
+// 	// const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
 
-	return token;
-};
+// 	user.tokens = user.tokens.concat({ token });
+// 	await user.save();
+
+// 	return token;
+// };
 
 userSchema.statics.findByCredentials = async (email, password) => {
 	const user = await User.findOne({ email });
