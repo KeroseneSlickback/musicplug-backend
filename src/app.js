@@ -36,11 +36,6 @@ app.use(helmet());
 app.use('/users', user_router);
 app.use('/posts', post_router);
 
-// test routes
-app.get('/', (req, res) => {
-	res.json({ message: 'Test GET' });
-});
-
 app.get('*', (req, res) => {
 	res.status(404).json({ message: 'Resource not found' });
 });

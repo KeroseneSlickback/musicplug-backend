@@ -1,4 +1,6 @@
 const User = require('../models/user_model');
+const Post = require('../models/post_model');
+const Comment = require('../models/comment_model');
 const multer = require('multer');
 const sharp = require('sharp');
 
@@ -54,6 +56,8 @@ exports.patch_me = [
 
 exports.delete_me = async (req, res) => {
 	try {
+		await Post.deleteMany({ owner: req.user._id });
+		await Comment.deleteMany({ owner: req.user._id });
 		await req.user.remove();
 		res.send(req.user);
 	} catch (e) {

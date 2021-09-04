@@ -39,17 +39,18 @@ const postSchema = new mongoose.Schema(
 			required: true,
 			ref: 'User',
 		},
+		comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
 	},
 	{
 		timestamps: true,
 	}
 );
 
-postSchema.virtual('comments', {
-	ref: 'Comment',
-	localField: '_id',
-	foreignField: 'post',
-});
+// postSchema.virtual('comments', {
+// 	ref: 'Comment',
+// 	localField: '_id',
+// 	foreignField: 'post',
+// });
 
 const Post = mongoose.model('Post', postSchema);
 
