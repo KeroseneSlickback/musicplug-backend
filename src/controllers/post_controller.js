@@ -31,7 +31,11 @@ exports.post_get = async (req, res) => {
 	}
 	try {
 		Post.find()
-			.populate('comments')
+			.populate({
+				path: 'comments',
+				populate: { path: 'owner' },
+			})
+			.populate('owner')
 			.skip(pageOptions.page * pageOptions.limit)
 			.limit(pageOptions.limit)
 			.sort(sort)
@@ -50,6 +54,7 @@ exports.post_get_single = async (req, res) => {
 	try {
 		Post.findOne({ _id })
 			.populate('comments')
+			.populate('owner')
 			.exec(function (err, post) {
 				if (err) throw new Error();
 				res.status(200).send(post);
