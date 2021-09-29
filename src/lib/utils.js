@@ -7,20 +7,20 @@ const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 function issueJWT(user) {
 	const _id = user._id;
-	const expiresIn = '1d';
+	// const expiresIn = '1d';
 	const payload = {
 		sub: _id,
 		iat: Date.now(),
 	};
 
 	const signedToken = jwt.sign(payload, PRIV_KEY, {
-		expiresIn: expiresIn,
+		// expiresIn: 24 * 60 * 60 * 1000,
 		algorithm: 'RS256',
 	});
 
 	return {
 		token: 'Bearer ' + signedToken,
-		expires: expiresIn,
+		// expires: expiresIn,
 	};
 }
 

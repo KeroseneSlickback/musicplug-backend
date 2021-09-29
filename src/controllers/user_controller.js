@@ -60,7 +60,7 @@ exports.register = [
 				success: true,
 				user,
 				token: jwt.token,
-				expiresIn: jwt.expires,
+				// expiresIn: jwt.expires,
 			});
 		} catch (e) {
 			res.status(400).send(e);
@@ -71,7 +71,7 @@ exports.register = [
 exports.login = async (req, res) => {
 	try {
 		const user = await User.findByCredentials(
-			req.body.email,
+			req.body.username,
 			req.body.password
 		);
 		if (!user) {
@@ -83,7 +83,7 @@ exports.login = async (req, res) => {
 				success: true,
 				user,
 				token: jwt.token,
-				expiresIn: jwt.expires,
+				// expiresIn: jwt.expires,
 			});
 		} else {
 			res.status(401).json({

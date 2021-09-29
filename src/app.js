@@ -33,7 +33,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
 app.use(helmet());
 
 // Required middleware routes
@@ -101,7 +100,7 @@ app.get('/callback', (req, res) => {
 
 			console.log(access_token);
 			res.redirect(
-				'http://localhost:3000/test/#' +
+				'http://localhost:3000/spotifyRedirect/#' +
 					querystring.stringify({
 						access_token,
 						refresh_token,
@@ -109,7 +108,7 @@ app.get('/callback', (req, res) => {
 			);
 		} else {
 			res.redirect(
-				'http://localhost:3000/test/#' +
+				'http://localhost:3000/spotifyRedirect/#' +
 					querystring.stringify({
 						error: 'invalid_token',
 					})
