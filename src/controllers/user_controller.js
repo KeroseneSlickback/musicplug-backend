@@ -39,6 +39,8 @@ exports.register = [
 			}
 			return true;
 		}),
+	body('avatarLink', 'For profile picture').trim().isLength({ min: 1 }),
+	body('spotifyLink', 'Link for Spotify').trim().isLength({ min: 1 }),
 	upload.single('avatar'),
 	async (req, res, next) => {
 		const errors = validationResult(req);

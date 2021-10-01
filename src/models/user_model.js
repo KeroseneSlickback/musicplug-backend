@@ -38,8 +38,11 @@ const userSchema = new mongoose.Schema(
 				}
 			},
 		},
-		avatar: {
-			type: Buffer,
+		avatarLink: {
+			type: String,
+		},
+		spotifyLink: {
+			type: String,
 		},
 		emailVerified: {
 			type: Boolean,
@@ -79,9 +82,10 @@ userSchema.methods.toJSON = function () {
 
 	delete userObject.password;
 	delete userObject.tokens;
-	delete userObject.avatar;
+	delete userObject.avatarLink;
 	delete userObject.admin;
 	delete userObject.emailVerified;
+	delete userObject.spotifyLink;
 
 	return userObject;
 };

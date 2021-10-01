@@ -94,13 +94,13 @@ app.get('/callback', (req, res) => {
 				json: true,
 			};
 
-			request.get(options, function (error, response, body) {
-				console.log(body);
-			});
+			// request.get(options, function (error, response, body) {
+			// 	console.log(body);
+			// });
 
 			console.log(access_token);
 			res.redirect(
-				'http://localhost:3000/spotifyRedirect/#' +
+				'http://localhost:3000/redirect/#' +
 					querystring.stringify({
 						access_token,
 						refresh_token,
@@ -108,7 +108,7 @@ app.get('/callback', (req, res) => {
 			);
 		} else {
 			res.redirect(
-				'http://localhost:3000/spotifyRedirect/#' +
+				'http://localhost:3000/redirect/#' +
 					querystring.stringify({
 						error: 'invalid_token',
 					})
