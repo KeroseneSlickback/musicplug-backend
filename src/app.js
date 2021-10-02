@@ -117,13 +117,35 @@ app.get('/callback', (req, res) => {
 	});
 });
 
-/*
+app.get('/refresh_token', function (req, res) {
+	const refresh_token = req.query.refresh_token;
+	const authOptions = {
+		url: 'https://accounts.spotify.com/api/token',
+		headers: {
+			Authorization:
+				'Basic ' +
+				new Buffer(
+					process.env.SPOTIFY_CLIENT_ID +
+						':' +
+						process.env.SPOTIFY_CLIENT_SECRET
+				).toString('base64'),
+		},
+		form: {
+			grant_type: 'refresh_token',
+			refresh_token: refresh_token,
+		},
+		json: true,
+	};
 
-access_token=BQADU6iRVBU_1KHHYfYBxpKWr9vcQ0Hh7U91S2iDqkHVdCZ9DStPVjpKbva4-RfS9g3Oorel_nUrH_e--_Do7LlxmEBhI0YqcoHeheAPWCSVmhQebmmfSw0cTI990wO2jomavo4KfDVP-gdAOne2ny1CzH00vPk&
-
-refresh_token=AQBg6zMoW5JkQLt3b0e1TpHMXx5yL6pqRSuRZqs37VylGHstnLmwbzjXF7_qz7xL6BCYXaXw2fbRIiWuu8vfnuRsXNLJEPyhu2eXf3doGF1h1SifvSZDaDZCexL6fiI79o4
-
-*/
+	request.post(authOptions, function (error, response, body) {
+		if (!error && response.statusCode === 200) {
+			const access_token = body.access_token;
+			res.send({
+				access_token,
+			});
+		}
+	});
+});
 
 app.get('*', (req, res) => {
 	res.status(404).json({ message: 'Resource not found' });
