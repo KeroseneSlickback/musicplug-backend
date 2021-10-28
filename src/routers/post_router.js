@@ -16,6 +16,8 @@ router.post(
 // Post GET
 router.get('/', post_controller.post_get);
 
+router.get('/genre', post_controller.post_get_genre);
+
 router.get('/:id', post_controller.post_get_single);
 
 // Post PATCH
@@ -23,6 +25,18 @@ router.patch(
 	'/:id',
 	passport.authenticate('jwt', { session: false }),
 	post_controller.post_patch
+);
+
+router.patch(
+	'/like/:id',
+	passport.authenticate('jwt', { session: false }),
+	post_controller.post_patch_like
+);
+
+router.patch(
+	'/unlike/:id',
+	passport.authenticate('jwt', { session: false }),
+	post_controller.post_patch_unlike
 );
 
 // Post DELETE

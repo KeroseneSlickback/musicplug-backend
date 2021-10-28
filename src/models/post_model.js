@@ -7,32 +7,33 @@ const postSchema = new mongoose.Schema(
 			required: true,
 			trim: true,
 		},
-		text: {
+		body: {
 			type: String,
 			required: true,
-			trim: true,
-		},
-		artist: {
-			type: String,
-			trim: true,
-		},
-		bio: {
-			type: String,
 			trim: true,
 		},
 		genre: {
 			type: String,
 			trim: true,
-		},
-		image: {
-			type: Buffer,
+			lowercase: true,
 		},
 		votes: {
 			type: Number,
+			default: 0,
 		},
-		recommended: {
-			type: String,
-			trim: true,
+		recommendation: {
+			artistName: { type: String },
+			artistId: { type: String },
+			artistImgUrl: { type: String },
+			artistUrl: { type: String },
+			albumName: { type: String },
+			albumId: { type: String },
+			albumImgUrl: { type: String },
+			albumUrl: { type: String },
+			trackName: { type: String },
+			trackId: { type: String },
+			trackImgUrl: { type: String },
+			trackUrl: { type: String },
 		},
 		owner: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -40,6 +41,7 @@ const postSchema = new mongoose.Schema(
 			ref: 'User',
 		},
 		comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+		likedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 	},
 	{
 		timestamps: true,
