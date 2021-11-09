@@ -51,21 +51,43 @@ exports.post_get = async (req, res) => {
 	}
 };
 
+exports.post_count_get = async (req, res) => {
+	try {
+		Post.find().countDocuments(function (err, count) {
+			if (err) throw new Error();
+			res.send({ count });
+		});
+	} catch (e) {
+		res.status(500).send(e);
+	}
+};
+
+exports.post_count_genre_get = async (req, res) => {
+	const genre = req.query.genre;
+	try {
+		Post.find({ genre }).countDocuments(function (err, count) {
+			if (err) throw new Error();
+			res.send({ count });
+		});
+	} catch (e) {
+		res.status(500).send(e);
+	}
+};
+
 exports.post_get_single = async (req, res) => {
 	const _id = req.params.id;
 	try {
 		Post.findOne({ _id })
-			.populate('comments')
+			.populate({
+				path: 'comments',
+				populate: { path: 'owner' },
+			})
 			.populate('owner')
 			.populate('likedUsers')
 			.exec(function (err, post) {
 				if (err) throw new Error();
 				res.status(200).send(post);
 			});
-		// if (!post) {
-		// 	return res.status(404).send();
-		// }
-		// res.status(200).send(post);
 	} catch (e) {
 		res.status(400).send(e);
 	}
@@ -93,6 +115,7 @@ exports.post_get_genre = async (req, res) => {
 				populate: { path: 'owner' },
 			})
 			.populate('owner')
+			.populate('likedUsers')
 			.skip(pageOptions.page * pageOptions.limit)
 			.limit(pageOptions.limit)
 			.sort(sort)

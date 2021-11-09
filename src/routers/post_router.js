@@ -16,7 +16,11 @@ router.post(
 // Post GET
 router.get('/', post_controller.post_get);
 
+router.get('/count', post_controller.post_count_get);
+
 router.get('/genre', post_controller.post_get_genre);
+
+router.get('/genre/count', post_controller.post_count_genre_get);
 
 router.get('/:id', post_controller.post_get_single);
 

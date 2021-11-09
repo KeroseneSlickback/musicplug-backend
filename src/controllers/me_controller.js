@@ -26,7 +26,7 @@ exports.patch_me = [
 	upload.single('avatar'),
 	async (req, res) => {
 		const updates = Object.keys(req.body);
-		const allowedUpdates = ['username', 'email', 'password', 'avatar'];
+		const allowedUpdates = ['username', 'password', 'avatar'];
 		const isValidOperation = updates.every(update => {
 			return allowedUpdates.includes(update);
 		});
@@ -47,8 +47,9 @@ exports.patch_me = [
 				user.avatar = buffer;
 			}
 			await req.user.save();
-			res.send(req.user);
+			await res.send(req.user);
 		} catch (e) {
+			console.log(e);
 			res.status(400).send(e);
 		}
 	},

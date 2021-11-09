@@ -39,13 +39,13 @@ exports.register = [
 			}
 			return true;
 		}),
-	body('avatarLink', 'For profile picture').trim().isLength({ min: 1 }),
+	body('avatarLink', 'For profile picture').trim(),
 	body('spotifyLink', 'Link for Spotify').trim().isLength({ min: 1 }),
 	upload.single('avatar'),
 	async (req, res, next) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			res.render('error');
+			console.log(errors);
 		}
 		const newUser = new User(req.body);
 		if (req.file) {
@@ -55,6 +55,7 @@ exports.register = [
 				.toBuffer();
 			user.avatar = buffer;
 		}
+		console.log(req.body);
 		try {
 			const user = await newUser.save();
 			const jwt = await utils.issueJWT(user);
@@ -65,6 +66,7 @@ exports.register = [
 				// expiresIn: jwt.expires,
 			});
 		} catch (e) {
+			console.log(e);
 			res.status(400).send(e);
 		}
 	},

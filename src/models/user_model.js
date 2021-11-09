@@ -82,10 +82,11 @@ userSchema.methods.toJSON = function () {
 
 	delete userObject.password;
 	delete userObject.tokens;
-	delete userObject.avatarLink;
+	// delete userObject.avatarLink;
+	delete userObject.email;
 	delete userObject.admin;
 	delete userObject.emailVerified;
-	delete userObject.spotifyLink;
+	// delete userObject.spotifyLink;
 
 	return userObject;
 };

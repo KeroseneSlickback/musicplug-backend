@@ -2,7 +2,6 @@ const Comment = require('../models/comment_model');
 const Post = require('../models/post_model');
 
 exports.comment_post = async (req, res) => {
-	console.log('Starting');
 	const comment = new Comment({
 		...req.body,
 		owner: req.user._id,
@@ -21,7 +20,7 @@ exports.comment_post = async (req, res) => {
 
 exports.comment_patch = async (req, res) => {
 	const updates = Object.keys(req.body);
-	const allowedUpdates = ['title', 'text'];
+	const allowedUpdates = ['body'];
 	const isValidOperation = updates.every(update => {
 		return allowedUpdates.includes(update);
 	});
