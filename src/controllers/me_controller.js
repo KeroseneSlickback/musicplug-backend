@@ -1,29 +1,11 @@
-const User = require('../models/user_model');
 const Post = require('../models/post_model');
 const Comment = require('../models/comment_model');
-const multer = require('multer');
-const sharp = require('sharp');
-
-const upload = multer({
-	limits: {
-		fileSize: 1000000,
-	},
-	fileFilter(req, file, cb) {
-		if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-			return cb(
-				new Error('Please upload as an image in jpg, jpeg, or png file.')
-			);
-		}
-		cb(undefined, true);
-	},
-});
 
 exports.get_me = (req, res) => {
 	res.send(req.user);
 };
 
 exports.patch_me = [
-	upload.single('avatar'),
 	async (req, res) => {
 		const updates = Object.keys(req.body);
 		const allowedUpdates = ['username', 'password', 'avatar'];
@@ -39,13 +21,6 @@ exports.patch_me = [
 			updates.forEach(update => {
 				req.user[update] = req.body[update];
 			});
-			if (req.file) {
-				const buffer = await sharp(req.file.buffer)
-					.resize({ width: 250, height: 250 })
-					.png()
-					.toBuffer();
-				user.avatar = buffer;
-			}
 			await req.user.save();
 			await res.send(req.user);
 		} catch (e) {

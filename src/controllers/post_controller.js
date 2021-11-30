@@ -77,17 +77,17 @@ exports.post_count_genre_get = async (req, res) => {
 exports.post_get_single = async (req, res) => {
 	const _id = req.params.id;
 	try {
-		Post.findOne({ _id })
+		const post = await Post.findOne({ _id })
 			.populate({
 				path: 'comments',
 				populate: { path: 'owner' },
 			})
 			.populate('owner')
-			.populate('likedUsers')
-			.exec(function (err, post) {
-				if (err) throw new Error();
-				res.status(200).send(post);
-			});
+			.populate('likedUsers');
+		if (!post) {
+			return res.status(404).send();
+		}
+		res.send(post);
 	} catch (e) {
 		res.status(400).send(e);
 	}
