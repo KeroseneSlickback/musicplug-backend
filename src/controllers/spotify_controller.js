@@ -55,7 +55,7 @@ exports.callback = (req, res) => {
 			// };
 
 			res.redirect(
-				'http://localhost:3000/redirect/#' +
+				'https://musicplug.vercel.app/redirect/#' +
 					querystring.stringify({
 						access_token,
 						refresh_token,
@@ -63,7 +63,7 @@ exports.callback = (req, res) => {
 			);
 		} else {
 			res.redirect(
-				'http://localhost:3000/redirect/#' +
+				'https://musicplug.vercel.app/redirect/#' +
 					querystring.stringify({
 						error: 'invalid_token',
 					})
