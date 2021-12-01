@@ -7,7 +7,7 @@ const logger = require('morgan');
 const passport = require('passport');
 require('./db/mongoose');
 require('dotenv').config();
-require('./config/passport')(passport);
+require('./lib/passport')(passport);
 
 // Required components
 

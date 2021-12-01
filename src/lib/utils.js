@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const pathToKey = path.join(__dirname, '../config', 'id_rsa_priv.pem');
-const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8');
+// const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 function issueJWT(user) {
 	const _id = user._id;
@@ -13,7 +13,7 @@ function issueJWT(user) {
 		iat: Date.now(),
 	};
 
-	const signedToken = jwt.sign(payload, PRIV_KEY, {
+	const signedToken = jwt.sign(payload, process.env.PRIV_KEY, {
 		// expiresIn: 24 * 60 * 60 * 1000,
 		algorithm: 'RS256',
 	});
