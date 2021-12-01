@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 
-const pathToKey = path.join(__dirname, '../config', 'id_rsa_priv.pem');
+// const pathToKey = path.join(__dirname, '../config', 'id_rsa_priv.pem');
 // const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 function issueJWT(user) {
@@ -13,11 +13,16 @@ function issueJWT(user) {
 		iat: Date.now(),
 	};
 
-	const signedToken = jwt.sign(payload, process.env.PRIV_KEY, {
-		// expiresIn: 24 * 60 * 60 * 1000,
-		algorithm: 'RS256',
-	});
-
+	console.log('Private key:', process.env.PRIV_KEY.replace(/\\n/g, '\n'));
+	const signedToken = jwt.sign(
+		payload,
+		process.env.PRIV_KEY.replace(/\\n/g, '\n'),
+		{
+			// expiresIn: 24 * 60 * 60 * 1000,
+			algorithm: 'RS256',
+		}
+	);
+	console.log(signedToken);
 	return {
 		token: 'Bearer ' + signedToken,
 		// expires: expiresIn,
