@@ -3,7 +3,7 @@ const request = require("request");
 
 const response_type = "code";
 const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize?";
-const redirect_uri = "http://localhost:8888/spotify/callback";
+const redirect_uri = "https://musicplug-backend.onrender.com";
 const SCOPES = "user-read-private user-read-email";
 
 exports.login = (req, res) => {
@@ -53,7 +53,7 @@ exports.callback = (req, res) => {
       // };
 
       res.redirect(
-        "http://localhost:3000/redirect/#" +
+        "https://musicplug.vercel.app/redirect/#" +
           querystring.stringify({
             access_token,
             refresh_token,
@@ -61,7 +61,7 @@ exports.callback = (req, res) => {
       );
     } else {
       res.redirect(
-        "http://localhost:3000/redirect/#" +
+        "https://musicplug.vercel.app/redirect/#" +
           querystring.stringify({
             error: "invalid_token",
           })
