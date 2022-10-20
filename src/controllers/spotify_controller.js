@@ -3,7 +3,7 @@ const request = require("request");
 
 const response_type = "code";
 const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize?";
-const redirect_uri = "https://musicplug-backend.onrender.com";
+const redirect_uri = "https://musicplug-backend.onrender.com/spotify/callback";
 const SCOPES = "user-read-private user-read-email";
 
 exports.login = (req, res) => {
